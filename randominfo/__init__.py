@@ -35,6 +35,7 @@ def get_id(length = 6, seq_number = None, step = 1, prefix = None, postfix = Non
 
 def get_first_name(gender = None):
 	firstNameFile = csv.reader(open(full_path('data.csv'), 'r'))
+	next(firstNameFile)
 	filteredData = []
 	if gender == None:
 		for data in firstNameFile:
@@ -57,6 +58,7 @@ def get_first_name(gender = None):
 
 def get_last_name():
 	lastNameFile = csv.reader(open(full_path('data.csv'), 'r'))
+	next(lastNameFile)
 	filteredData = []
 	for data in lastNameFile:
 		if data[1] != '':
@@ -65,6 +67,7 @@ def get_last_name():
 
 def get_gender(first_name):
 	firstNameFile = csv.reader(open(full_path('data.csv'), 'r'))
+	next(firstNameFile)
 	gender = ""
 	for data in firstNameFile:
 		if data[0] != '' and data[0] == first_name:
@@ -74,11 +77,12 @@ def get_gender(first_name):
 
 def get_country(first_name = None):
 	countryFile = csv.reader(open(full_path('data.csv'), 'r'))
+	next(countryFile)
 	country = ""
 	if first_name != None:
 		for data in countryFile:
 			if data[0] != '' and data[0] == first_name:
-				country = data[3]
+				country = "India"
 				break
 		if country == "":
 			print("Specified user data is not available. Tip: Generate random country.")
@@ -259,9 +263,10 @@ def get_birthdate(startAge = None, endAge = None, _format = "%d %b, %Y"):
 
 def get_address():
 	full_addr = []
-	addrParam = ['street', 'landmark', 'area', 'city', 'state', 'country', 'pincode']
-	for i in range(5,12):
+	addrParam = ['street', 'landmark', 'area', 'city', 'state', 'pincode']
+	for i in range(4,10):
 		addrFile = csv.reader(open(full_path('data.csv'), 'r'))
+		next(addrFile)
 		allAddrs = []
 		for addr in addrFile:
 			try:
@@ -275,10 +280,11 @@ def get_address():
 
 def get_hobbies():
 	hobbiesFile = csv.reader(open(full_path('data.csv'), 'r'))
+	next(hobbiesFile)
 	allHobbies = []
 	for data in hobbiesFile:
-		if data[4] != '':
-			allHobbies.append(data[4])
+		if data[3] != '':
+			allHobbies.append(data[3])
 	hobbies = []
 	for _ in range (1, randint(2,6)):
 		hobbies.append(choice(allHobbies))
