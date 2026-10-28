@@ -2,4 +2,4 @@ psycopg2-binary
 pytest
 allure-pytest
 playwright
-pyмtest-playwright
+pytest-playwright
