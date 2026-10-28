@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        USER_LOGIN = credentials('qauto-user-login')
+        USER_PASSWORD = credentials('qauto-user-password')
+    }
+
     stages {
         stage('Checkout') {
             steps {
