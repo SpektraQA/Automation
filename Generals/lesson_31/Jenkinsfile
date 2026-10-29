@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        USER_LOGIN = credentials('qauto-user-login')
+        USER_PASSWORD = credentials('qauto-user-password')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                sh '''
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+                    pip install -r Generals/lesson_30/requirements.txt
+                    playwright install --with-deps chromium
+                '''
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                sh '''
+                    . .venv/bin/activate
+                    pytest Generals/lesson_30 --alluredir=allure-results
+                '''
+            }
+        }
+
+        stage('Publish results') {
+            steps {
+                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+            }
+        }
+    }
+
+    post {
+        always {
+            mail to: 'sergejperederiev@gmail.com',
+                 subject: "Jenkins Pipeline: ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                 body: "Build ${env.BUILD_URL} finished with status: ${currentBuild.currentResult}"
+        }
+    }
+}
